@@ -1,0 +1,9 @@
+name: BanditFriends
+version: 1.0.0
+main: studio.mars.banditfriends.BanditFriendsPlugin
+api-version: '1.21'
+author: Mars Studios
+description: Fully configurable friends system.
+permissions:
+  banditfriends.admin:
+    default: op
