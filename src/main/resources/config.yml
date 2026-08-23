@@ -1,6 +1,31 @@
 # All text supports MiniMessage formatting: https://docs.advntr.dev/minimessage/format.html
 storage:
+  # yaml is suitable for one server. mysql shares friends, names and last-seen across your network.
+  type: yaml # yaml or mysql
   file: friends.yml
+  mysql:
+    host: 127.0.0.1
+    port: 3306
+    database: minecraft
+    username: root
+    password: change-me
+    table-prefix: banditfriends_
+    use-ssl: false
+commands:
+  friends:
+    label: vriend
+    aliases: [vrienden, friends, friend]
+    permission: ''
+  accept:
+    # Used as subcommand: /vriend accept
+    subcommand: accept
+  deny:
+    # Used as subcommand: /vriend deny
+    subcommand: deny
+  friendsadmin:
+    label: vriendenadmin
+    aliases: [friendsadmin, vriendenadm]
+    permission: banditfriends.admin
 requests:
   expiry-seconds: 60
   notify-friends-on-join: true
