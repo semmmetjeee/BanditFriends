@@ -1,0 +1,14 @@
+# Commands are registered dynamically at enable and after /friendsadmin reload.
+commands:
+  friends:
+    aliases: [vrienden, friend]
+    permission: ''
+  accept:
+    aliases: [vriendenaccept]
+    permission: ''
+  deny:
+    aliases: [vriendendeny]
+    permission: ''
+  friendsadmin:
+    aliases: [vriendenadmin, friendsadm]
+    permission: banditfriends.admin
