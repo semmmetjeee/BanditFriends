@@ -1,0 +1,25 @@
+title: '<gradient:#6d5dfc:#a78bfa><bold>Your Friends</bold></gradient>'
+# 1 to 6 rows. The outside border automatically receives panes, while friend entries fill the inside.
+rows: 6
+border:
+  material: PURPLE_STAINED_GLASS_PANE
+  name: ' '
+  lore: []
+friends:
+  online:
+    material: LIME_DYE
+    name: '<green><bold><player></bold> <dark_gray>•</dark_gray> Online</green>'
+  offline:
+    material: GRAY_DYE
+    name: '<gray><bold><player></bold> <dark_gray>•</dark_gray> Offline</gray>'
+  lore:
+    - ''
+    - '<dark_gray>Friends since</dark_gray> <white><friends_since></white>'
+    - '<dark_gray>Last seen</dark_gray> <white><last_seen></white>'
+    - ''
+    - '<yellow>Click to remove this friend.</yellow>'
+empty:
+  material: PLAYER_HEAD
+  name: '<gray>No friends yet</gray>'
+  lore:
+    - '<dark_gray>Use /friends add <player> to send a request.'
