@@ -29,6 +29,12 @@ commands:
 requests:
   expiry-seconds: 60
   notify-friends-on-join: true
+limits:
+  max-friends: 10
+network:
+  # MySQL presence is refreshed every five seconds. Players are treated as offline
+  # only after this grace period, which prevents leave/join spam on server switches.
+  presence-grace-seconds: 15
 messages:
   prefix: '<gradient:#6d5dfc:#a78bfa><bold>Friends</bold></gradient> <dark_gray>»</dark_gray> '
   no-permission: '<red>You do not have permission.</red>'
@@ -36,6 +42,8 @@ messages:
   player-not-found: '<red>That player has never joined this server.</red>'
   cannot-friend-self: '<red>You cannot add yourself.</red>'
   already-friends: '<yellow>You are already friends with <white><target></white>.</yellow>'
+  max-friends-reached: '<red>You can have a maximum of <white><max></white> friends.</red>'
+  not-friends: '<red><white><target></white> is not your friend.</red>'
   request-sent: '<green>Friend request sent to <white><target></white>.</green>'
   request-received: '<aqua><sender></aqua> <white>wants to be your friend. Use <green>/<accept-command></green> or <red>/<deny-command></red> within <yellow><seconds>s</yellow>.</white>'
   request-expired: '<red>Your friend request from <white><sender></white> has expired.</red>'
@@ -47,6 +55,7 @@ messages:
   friend-removed: '<yellow>You removed <white><target></white> from your friends.</yellow>'
   removed-by-other: '<yellow><target> removed you from their friends.</yellow>'
   friend-joined: '<green>Your friend <white><target></white> is now online.</green>'
+  friend-left: '<yellow>Your friend <white><target></white> is now offline.</yellow>'
   reloaded: '<green>BanditFriends configuration reloaded.</green>'
   admin-added: '<green>Added <white><target></white> as friend of <white><player></white>.</green>'
   admin-removed: '<yellow>Removed <white><target></white> from <white><player></white>.</yellow>'
