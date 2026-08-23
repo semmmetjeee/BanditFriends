@@ -1,6 +1,9 @@
 title: '<gradient:#6d5dfc:#a78bfa><bold>Your Friends</bold></gradient>'
 # 1 to 6 rows. The outside border automatically receives panes, while friend entries fill the inside.
 rows: 6
+# Friend entries are intentionally fixed to two centred rows (maximum ten friends).
+friend-slots: [20, 21, 22, 23, 24, 29, 30, 31, 32, 33]
+empty-slot: 31
 border:
   material: PURPLE_STAINED_GLASS_PANE
   name: ' '
@@ -19,7 +22,7 @@ friends:
     - ''
     - '<yellow>Click to remove this friend.</yellow>'
 empty:
-  material: PLAYER_HEAD
+  material: BARRIER
   name: '<gray>No friends yet</gray>'
   lore:
     - '<dark_gray>Use /friends add <player> to send a request.'
