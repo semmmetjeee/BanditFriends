@@ -1,0 +1,39 @@
+# Velocity uses MySQL so friend data is shared with your Paper servers.
+storage:
+  mysql:
+    host: 127.0.0.1
+    port: 3306
+    database: minecraft
+    username: root
+    password: change-me
+    table-prefix: banditfriends_
+    use-ssl: false
+commands:
+  friends: vriend
+  friendsadmin: vriendenadmin
+requests:
+  expiry-seconds: 60
+limits:
+  max-friends: 10
+network:
+  presence-grace-seconds: 15
+messages:
+  prefix: '<gradient:#6d5dfc:#a78bfa><bold>Friends</bold></gradient> <dark_gray>»</dark_gray> '
+  no-permission: '<red>You do not have permission.</red>'
+  player-only: '<red>This command is for players only.</red>'
+  player-not-found: '<red>That player has never joined this network.</red>'
+  cannot-friend-self: '<red>You cannot add yourself.</red>'
+  already-friends: '<yellow>You are already friends with <white><target></white>.</yellow>'
+  max-friends-reached: '<red>You can have a maximum of <white><max></white> friends.</red>'
+  not-friends: '<red><white><target></white> is not your friend.</red>'
+  request-sent: '<green>Friend request sent to <white><target></white>.</green>'
+  request-received: '<aqua><sender></aqua> <white>wants to be your friend. Use <green>/<accept-command></green> or <red>/<deny-command></red> within <yellow><seconds>s</yellow>.</white>'
+  request-expired: '<red>Your friend request from <white><sender></white> has expired.</red>'
+  no-request: '<red>You have no pending friend request.</red>'
+  request-accepted: '<green>You are now friends with <white><target></white>!</green>'
+  request-accepted-sender: '<green><target> accepted your friend request!</green>'
+  request-denied: '<yellow>You declined the friend request from <white><sender></white>.</yellow>'
+  request-denied-sender: '<red><target> declined your friend request.</red>'
+  friend-removed: '<yellow>You removed <white><target></white> from your friends.</yellow>'
+  removed-by-other: '<yellow><target> removed you from their friends.</yellow>'
+  reloaded: '<green>BanditFriends configuration reloaded.</green>'
