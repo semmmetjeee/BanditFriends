@@ -1,0 +1,17 @@
+package studio.mars.banditfriends.velocity;
+import java.sql.*;import java.util.*;
+final class VelocityStorage implements AutoCloseable {
+ private final String players,friends,presence;private final Connection connection;
+ VelocityStorage(org.spongepowered.configurate.ConfigurationNode c)throws SQLException{
+  String prefix=c.node("table-prefix").getString("banditfriends_");if(!prefix.matches("[A-Za-z0-9_]+"))throw new SQLException("Invalid MySQL table-prefix");
+  players=prefix+"players";friends=prefix+"friends";presence=prefix+"presence";
+  String url="jdbc:mysql://"+c.node("host").getString()+":"+c.node("port").getInt(3306)+"/"+c.node("database").getString()+"?useSSL="+c.node("use-ssl").getBoolean(false)+"&characterEncoding=utf8";
+  connection=DriverManager.getConnection(url,c.node("username").getString(),c.node("password").getString());
+  try(Statement s=connection.createStatement()){s.executeUpdate("CREATE TABLE IF NOT EXISTS "+players+" (uuid CHAR(36) PRIMARY KEY, name VARCHAR(16) NOT NULL, last_seen BIGINT NOT NULL)");s.executeUpdate("CREATE TABLE IF NOT EXISTS "+friends+" (owner_uuid CHAR(36) NOT NULL, friend_uuid CHAR(36) NOT NULL, friends_since BIGINT NOT NULL, PRIMARY KEY(owner_uuid, friend_uuid))");s.executeUpdate("CREATE TABLE IF NOT EXISTS "+presence+" (uuid CHAR(36) PRIMARY KEY, heartbeat BIGINT NOT NULL)");}}
+ void touch(UUID id,String name,long now)throws SQLException{try(PreparedStatement s=connection.prepareStatement("INSERT INTO "+players+" (uuid,name,last_seen) VALUES (?,?,?) ON DUPLICATE KEY UPDATE name=VALUES(name),last_seen=VALUES(last_seen)")){s.setString(1,id.toString());s.setString(2,name);s.setLong(3,now);s.executeUpdate();}try(PreparedStatement s=connection.prepareStatement("INSERT INTO "+presence+" (uuid,heartbeat) VALUES (?,?) ON DUPLICATE KEY UPDATE heartbeat=VALUES(heartbeat)")){s.setString(1,id.toString());s.setLong(2,now);s.executeUpdate();}}
+ Set<UUID> friends(UUID id)throws SQLException{Set<UUID> r=new HashSet<>();try(PreparedStatement s=connection.prepareStatement("SELECT friend_uuid FROM "+friends+" WHERE owner_uuid=?")){s.setString(1,id.toString());try(ResultSet q=s.executeQuery()){while(q.next())r.add(UUID.fromString(q.getString(1)));}}return r;}
+ void add(UUID a,UUID b,long now)throws SQLException{String q="INSERT INTO "+friends+" (owner_uuid,friend_uuid,friends_since) VALUES (?,?,?) ON DUPLICATE KEY UPDATE friends_since=friends_since";try(PreparedStatement s=connection.prepareStatement(q)){for(UUID[] p:List.of(new UUID[]{a,b},new UUID[]{b,a})){s.setString(1,p[0].toString());s.setString(2,p[1].toString());s.setLong(3,now);s.addBatch();}s.executeBatch();}}
+ void remove(UUID a,UUID b)throws SQLException{try(PreparedStatement s=connection.prepareStatement("DELETE FROM "+friends+" WHERE (owner_uuid=? AND friend_uuid=?) OR (owner_uuid=? AND friend_uuid=?)")){s.setString(1,a.toString());s.setString(2,b.toString());s.setString(3,b.toString());s.setString(4,a.toString());s.executeUpdate();}}
+ UUID byName(String name)throws SQLException{try(PreparedStatement s=connection.prepareStatement("SELECT uuid FROM "+players+" WHERE LOWER(name)=LOWER(?) LIMIT 1")){s.setString(1,name);try(ResultSet q=s.executeQuery()){return q.next()?UUID.fromString(q.getString(1)):null;}}}
+ public void close()throws SQLException{connection.close();}
+}
